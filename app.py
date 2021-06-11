@@ -8,7 +8,8 @@ import joblib
 tokenizer = nltk.RegexpTokenizer('\w+')
 nltk.download('punkt')
 from nltk.stem import WordNetLemmatizer
-a = 1+1
+from collections import Counter
+
 lemmatizer = WordNetLemmatizer()
 
 LOGO_IMAGE = "images/OC_logo.png"
@@ -117,22 +118,34 @@ ModelSup = joblib.load('modelSup.joblib')
 SVD = joblib.load('TruncatedSVD_model.joblib')
 TFIDF = joblib.load('tfidfmodel.joblib')
 mlb = joblib.load("mlb.joblib")
+LDA = joblib.load("lda_model.joblilb")
 
 if ButtonON:
     text = modification(user_input)
     if len(user_input2) !=0 :
         if len(user_input1) ==0 : 
             st.markdown("<span style='color:orange'>Conseil : Vous pouvez rajouter le titre du post pour avoir une prédiction plus fiable</span>",unsafe_allow_html=True)   
+        st.markdown("<span>Résultat du modèle supervisé :</span>",unsafe_allow_html=True)
         X = TFIDF.transform([text]).toarray()
         X = SVD.transform(X)
 #         st.markdown(X)
         ypred = ModelSup.predict(X)
         ypred_name = mlb.inverse_transform(ypred)
 #         st.markdown(ypred, unsafe_allow_html=True)
-        
         st.markdown(ypred_name, unsafe_allow_html=True)
         result = Affichage(ypred_name)
-        st.markdown("<span style='color:#69FF69'>Après analyse nous vous suggérons les tags suivants :</span>",unsafe_allow_html=True) 
         st.markdown(result, unsafe_allow_html=True)
+
+        st.markdown("<span>Résultat du modèle non supervisé :</span>",unsafe_allow_html=True)
+        coooorpuus = id2word.doc2bow(text)
+        row = lda_model.get_document_topics(coooorpuus)
+        row = sorted(row, key=lambda x: x[1], reverse=True)
+        main_topics = pd.DataFrame()
+        main_topics = pd.DataFrame(row)
+        main_topics.columns = ['Num_Topics', 'Proba']
+        main_topics['Proba_Score'] = main_topics['Proba']/main_topics['Proba'].sum()*100
+        main_topics['Proba_Cum_Score'] = main_topics['Proba_Score'].cumsum()
+
+
     else :
         st.markdown("<span style='color:red'>Analyse impossible : Vous devez entrer au moins le corps du post pour avoir des suggestions de tags</span>",unsafe_allow_html=True)
