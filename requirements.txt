@@ -4,4 +4,3 @@ sklearn
 nltk
 sklearn
 joblib
-collections
