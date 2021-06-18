@@ -1,5 +1,0 @@
-streamlit == 0.82.0
-pandas == 1.1.3
-nltk == 3.5
-sklearn
-joblib == 0.17.0
