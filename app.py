@@ -18,7 +18,6 @@ df_tags_topics = pd.read_csv('df_tags_topics.csv').copy()
 
 lemmatizer = WordNetLemmatizer()
 
-LOGO_IMAGE = "images/OC_logo.png"
 
 st.markdown(
     """
@@ -45,7 +44,6 @@ st.markdown(
 st.markdown(
     f"""
     <div class="container">
-        <img class="logo-img" src="data:image/png;base64,{pybase64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
         <p class="logo-text">Openclassrooms - Projet 5<br>
         Parcours Ingénieur Machine Learning</p>
     </div>
@@ -54,8 +52,6 @@ st.markdown(
 )
 
 
-st.image("images/StackOverflowImage.png", width = 200)
-st.markdown("")
 
 
 
