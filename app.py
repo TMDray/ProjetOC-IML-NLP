@@ -7,6 +7,7 @@ from nltk.corpus import wordnet
 import joblib
 tokenizer = nltk.RegexpTokenizer('\w+')
 nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 from nltk.stem import WordNetLemmatizer
 import gensim
 import gensim.corpora as corpora
