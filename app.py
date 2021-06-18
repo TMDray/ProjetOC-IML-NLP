@@ -192,7 +192,7 @@ if ButtonON:
         st.markdown("<span>Résultat du modèle non supervisé sans l'utilisation de tags déjà existants: </span>",unsafe_allow_html=True)
         for i in N_Topics :
 
-            Dict = eval(df_suggest_topic[df_suggest_topic['Num_Topics']==i]['Dict_predict'].iloc[0][8:-1])
+            Dict = eval(df_suggest_topic[df_suggest_topic['Num_Topics']==i]['Dict_predict'].iloc[0])
             Dict = df_suggest_topic[df_suggest_topic['Num_Topics'] == i]["Dict_predict"].values[0]
             DF_tags1 = pd.DataFrame(list(Dict.items()), columns=['Tags', 'Num'])
             DF_tags1['Normalize_Num'] = DF_tags1['Num']/DF_tags1['Num'].sum()
