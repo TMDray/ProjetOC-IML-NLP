@@ -193,7 +193,6 @@ if ButtonON:
         for i in N_Topics :
 
             Dict = eval(df_suggest_topic[df_suggest_topic['Num_Topics']==i]['Dict_predict'].iloc[0])
-            Dict = df_suggest_topic[df_suggest_topic['Num_Topics'] == i]["Dict_predict"].values[0]
             DF_tags1 = pd.DataFrame(list(Dict.items()), columns=['Tags', 'Num'])
             DF_tags1['Normalize_Num'] = DF_tags1['Num']/DF_tags1['Num'].sum()
             DF_tags1 = DF_tags1[DF_tags1['Normalize_Num']>0.04]
