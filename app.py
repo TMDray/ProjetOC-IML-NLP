@@ -139,8 +139,9 @@ lda_model = joblib.load("lda_model.joblib")
 id2word = joblib.load("id2word.joblib")
 
 if ButtonON:
-    text = modification(user_input)
+    
     if len(user_input2) !=0 :
+        text = modification(user_input)
         if len(user_input1) ==0 : 
             st.markdown("<span style='color:orange'>Conseil : Vous pouvez rajouter le titre du post pour avoir une prédiction plus fiable</span>",unsafe_allow_html=True)   
         
@@ -191,7 +192,7 @@ if ButtonON:
         st.markdown("<span>Résultat du modèle non supervisé sans l'utilisation de tags déjà existants: </span>",unsafe_allow_html=True)
         for i in N_Topics :
 
-            Dict = eval(df_suggest_topic[df_suggest_topic['Num_Topic']==i]['Dict_predict'].iloc[0][8:-1])
+            Dict = eval(df_suggest_topic[df_suggest_topic['Num_Topics']==i]['Dict_predict'].iloc[0][8:-1])
             Dict = df_suggest_topic[df_suggest_topic['Num_Topics'] == i]["Dict_predict"].values[0]
             DF_tags1 = pd.DataFrame(list(Dict.items()), columns=['Tags', 'Num'])
             DF_tags1['Normalize_Num'] = DF_tags1['Num']/DF_tags1['Num'].sum()
