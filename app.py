@@ -2,7 +2,7 @@
 
 import streamlit as st
 import pandas as pd
-import base64
+import pybase64
 import nltk
 import sklearn
 from nltk.corpus import wordnet
@@ -10,7 +10,6 @@ import joblib
 tokenizer = nltk.RegexpTokenizer('\w+')
 nltk.download('punkt')
 from nltk.stem import WordNetLemmatizer
-from collections import Counter
 import gensim
 import gensim.corpora as corpora
 from gensim.utils import simple_preprocess
@@ -48,7 +47,7 @@ st.markdown(
 st.markdown(
     f"""
     <div class="container">
-        <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
+        <img class="logo-img" src="data:image/png;base64,{pybase64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
         <p class="logo-text">Openclassrooms - Projet 5<br>
         Parcours Ingénieur Machine Learning</p>
     </div>
@@ -174,7 +173,7 @@ if ButtonON:
         DF_tags = pd.DataFrame()
         for i in N_Topics :
 
-            Dict = ast.literal_eval(df_tags_topics[df_tags_topics['Dominant_Topic']==i]['Count_tags'].iloc[0][8:-1])
+            Dict = eval(df_tags_topics[df_tags_topics['Dominant_Topic']==i]['Count_tags'].iloc[0][8:-1])
             Tot = sum(Dict.values())
             DF_tags1 = pd.DataFrame(list(Dict.items()), columns=['Tags', 'Num'])
             DF_tags1['Normalize_Num'] = DF_tags1['Num']/DF_tags1['Num'].sum()
