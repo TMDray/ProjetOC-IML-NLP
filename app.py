@@ -16,6 +16,8 @@ from gensim.models import CoherenceModel
 import ast
 
 df_tags_topics = pd.read_csv('df_tags_topics.csv').copy()
+df_suggest_topic = pd.read_csv('df_suggest_topic.csv').copy()
+
 
 lemmatizer = WordNetLemmatizer()
 
@@ -185,8 +187,26 @@ if ButtonON:
             result+= str(i)+ '  '
 
         st.markdown(result, unsafe_allow_html=True)
+
+        st.markdown("<span>Résultat du modèle non supervisé sans l'utilisation de tags déjà existants: </span>",unsafe_allow_html=True)
+        for i in N_Topics :
+
+            Dict = eval(df_suggest_topic[df_suggest_topic['Num_Topic']==i]['Dict_predict'].iloc[0][8:-1])
+            Dict = df_suggest_topic[df_suggest_topic['Num_Topics'] == i]["Dict_predict"].values[0]
+            DF_tags1 = pd.DataFrame(list(Dict.items()), columns=['Tags', 'Num'])
+            DF_tags1['Normalize_Num'] = DF_tags1['Num']/DF_tags1['Num'].sum()
+            DF_tags1 = DF_tags1[DF_tags1['Normalize_Num']>0.04]
+            DF_tags1['ScoreImportance_Tags'] = (((float(main_topics[main_topics['Num_Topics']==i]['Proba_Score'])))) * DF_tags1['Normalize_Num']/10
+            DF_tags = pd.concat([DF_tags, DF_tags1]) 
+
+        df_probTags = DF_tags.groupby(by = ['Tags']).sum()
+        L_tags = df_probTags['ScoreImportance_Tags'].sort_values(ascending = False)[df_probTags['ScoreImportance_Tags'].sort_values(ascending = False)>0.25][:5].keys()
         
-        st.markdown("<span>Résultat du modèle non supervisé en utilisant des tags : </span>",unsafe_allow_html=True)
+        result = ''
+        for i in L_tags :
+            result+= str(i)+ '  '
+        
+        st.markdown(result, unsafe_allow_html=True)
 
     else :
         st.markdown("<span style='color:red'>Analyse impossible : Vous devez entrer au moins le corps du post pour avoir des suggestions de tags</span>",unsafe_allow_html=True)
